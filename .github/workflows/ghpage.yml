@@ -5,7 +5,7 @@ on:
     branches:
       - main # The branch the action should deploy from.
     paths:
-      - 'apps/web/**' # The path to your build output folder.
+      - 'frontend/**' # The path to your build output folder.
       - 'pnpm-*'
       - '.github/workflows/ghpage.yml'
 
@@ -22,9 +22,9 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
+      - uses: npm/action-setup@v2
+        name: Install npm
+        id: npm-install
         with:
           version: 8
           run_install: false
@@ -33,10 +33,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-          cache: pnpm
+          cache: npm
       
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
       
       # - name: Create Env File
       #   run: |
@@ -44,12 +44,12 @@ jobs:
       #     echo NEXT_PUBLIC_PRIVATE_KEY=${{secrets.NEXT_PUBLIC_PRIVATE_KEY}} >> ./apps/web3/.env
       
       - name: Build my App
-        run: pnpm run build
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: apps/web/dist
+          path: frontend/dist
   
   deploy:
     environment:
